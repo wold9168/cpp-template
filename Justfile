@@ -40,9 +40,9 @@ nix-clean:
 nix-gc:
     nix-collect-garbage
 
-# build with nix (output in result/)
-nix-build:
-    nix build
+# build with nix (output in build/)
+nix-build target_architecture="x86_64-linux":
+    nix build .#packages.{{ target_architecture }}.default -o {{ build_dir }}
 
 # nix build + run
 nix-run: nix-build
