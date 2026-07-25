@@ -34,7 +34,7 @@ nix-devinit:
 
 # nix clean (remove result symlink and nix build dirs)
 nix-clean:
-    trash {{ build_dir }} result-*
+    trash {{ build_dir }}
 
 # nix gc: clean old store
 nix-gc:
