@@ -53,7 +53,3 @@ nix-run: nix-build
 debug debugger="lldb" args="":
     @test -f {{ nix_build_dir }}/main/main || { echo "error: {{ nix_build_dir }}/main/main not found, build first"; exit 1; }
     {{ debugger }} {{ nix_build_dir }}/main/main {{ args }}
-
-# start mini compile commands server for clangd
-clangd-server:
-    mini_compile_commands_server.py compile_commands.json
