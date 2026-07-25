@@ -57,6 +57,33 @@
           # pkgs.fmt
         ];
 
+      # ═══════════════════════════════════════════════════════════
+      # Third-party libs (uncomment inputs above, then uncomment here)
+      # ═══════════════════════════════════════════════════════════
+      mkThirdPartyLibs = pkgs: with pkgs; [
+        # (pkgs.stdenv.mkDerivation {
+        #   pname = "example-cmake-lib";
+        #   version = "unstable";
+        #   src = inputs.example-cmake-lib;
+        #   nativeBuildInputs = [ cmake ];
+        #   installPhase = ''
+        #     mkdir -p $out/lib
+        #     cp -r lib/* $out/lib/ 2>/dev/null || true
+        #     cp -r include $out/ 2>/dev/null || true
+        #   '';
+        # })
+        # (pkgs.stdenv.mkDerivation {
+        #   pname = "example-makefile-lib";
+        #   version = "unstable";
+        #   src = inputs.example-makefile-lib;
+        #   installPhase = ''
+        #     mkdir -p $out/lib
+        #     cp lib/* $out/lib/ 2>/dev/null || true
+        #     cp -r include $out/ 2>/dev/null || true
+        #   '';
+        # })
+      ];
+
       cppProject =
         {
           system,
@@ -69,7 +96,7 @@
           src = pkgs.lib.cleanSource ./.;
 
           nativeBuildInputs = with pkgs; [ cmake ];
-          buildInputs = genLibInputs pkgs;
+          buildInputs = genLibInputs pkgs ++ mkThirdPartyLibs pkgs;
 
           # preConfigure for inputs.example-cmake-lib, inputs.example-makefile-lib
           # ── Build non-Nix third-party libs from inputs ──────
@@ -108,8 +135,7 @@
         in
         {
           default = pkgs.mkShell {
-            nativeBuildInputs = genToolchainInputs pkgs;
-            buildInputs = genLibInputs pkgs;
+            nativeBuildInputs = genToolchainInputs pkgs ++ genLibInputs pkgs ++ mkThirdPartyLibs pkgs;
 
             shellHook = ''
               echo "nix devShell for cpp-template"
