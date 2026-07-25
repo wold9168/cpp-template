@@ -49,6 +49,7 @@
           lldb
           just
           direnv
+          clang-tools
         ];
       genLibInputs =
         pkgs: with pkgs; [
@@ -117,6 +118,7 @@
               echo "  gdb   : $(gdb --version | head -1)"
               echo "  lldb  : $(lldb --version | head -1)"
               echo "  just  : $(just --version | head -1)"
+              echo "  clangd: $(clangd --version | head -1)"
             '';
           };
         }
