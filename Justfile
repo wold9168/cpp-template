@@ -36,6 +36,10 @@ nix-devinit:
 nix-clean:
     trash result result-*
 
+# nix gc: clean old store
+nix-gc:
+    nix-collect-garbage
+
 # build with nix (output in result/)
 nix-build:
     nix build
