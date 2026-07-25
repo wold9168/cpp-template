@@ -33,3 +33,9 @@
 
 build/
 .cache/
+
+# Build Result
+result
+
+# Direnv Cache
+.direnv
