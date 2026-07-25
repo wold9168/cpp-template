@@ -34,7 +34,7 @@ nix-devinit:
 
 # nix clean (remove result symlink and nix build dirs)
 nix-clean:
-    trash result result-*
+    trash {{ build_dir }} result-*
 
 # nix gc: clean old store
 nix-gc:
@@ -46,9 +46,13 @@ nix-build target_architecture="x86_64-linux":
 
 # nix build + run
 nix-run: nix-build
-    ./result/bin/main
+    ./{{ build_dir }}/main/main
 
 # debug nix build result
 debug debugger="lldb" args="":
-    @test -f result/bin/main || { echo "error: result/bin/main not found, build first"; exit 1; }
-    {{ debugger }} result/bin/main {{ args }}
+    @test -f {{ build_dir }}/main/main || { echo "error: {{ build_dir }}/main/main not found, build first"; exit 1; }
+    {{ debugger }} {{ build_dir }}/main/main {{ args }}
+
+# start mini compile commands server for clangd
+clangd-server:
+    mini_compile_commands_server.py compile_commands.json
