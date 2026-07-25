@@ -47,6 +47,8 @@
           gcc
           gdb
           lldb
+          just
+          direnv
         ];
       genLibInputs =
         pkgs: with pkgs; [
@@ -88,15 +90,8 @@
           # cmakeFlags = [ "-DCMAKE_PREFIX_PATH=$PWD/.deps" ];
 
           installPhase = ''
-            mkdir -p $out/bin $out/lib
-            find . -maxdepth 3 -type f -executable | while read f; do
-              if file "$f" | grep -q "ELF" && ! echo "$f" | grep -q "CMake"; then
-                cp "$f" "$out/bin/"
-              fi
-            done
-            find . -maxdepth 3 \( -name '*.so*' -o -name '*.a' \) | while read f; do
-              cp "$f" "$out/lib/"
-            done
+            mkdir -p $out
+            cp -r . $out
           '';
         };
     in
@@ -119,6 +114,9 @@
               echo "nix devShell for cpp-template"
               echo "  cmake : $(cmake --version | head -1)"
               echo "  gcc   : $(gcc --version | head -1)"
+              echo "  gdb   : $(gdb --version | head -1)"
+              echo "  lldb  : $(lldb --version | head -1)"
+              echo "  just  : $(just --version | head -1)"
             '';
           };
         }
