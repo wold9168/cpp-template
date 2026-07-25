@@ -49,6 +49,6 @@ nix-run: nix-build
     ./result/bin/main
 
 # debug nix build result
-nix-debug debugger="lldb" args="":
-    @test -f result/bin/main || { echo "error: result/bin/main not found, run 'just nix-build' first"; exit 1; }
+debug debugger="lldb" args="":
+    @test -f result/bin/main || { echo "error: result/bin/main not found, build first"; exit 1; }
     {{ debugger }} result/bin/main {{ args }}
