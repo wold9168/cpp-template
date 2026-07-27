@@ -29,7 +29,7 @@ devshell:
     nix develop
 
 # check flake.nix
-fcheck:
+fc:
     nix flake check
 
 # configure direnv
