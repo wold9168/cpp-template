@@ -28,6 +28,10 @@ rebuild: clean build
 devshell:
     nix develop
 
+# check flake.nix
+fcheck:
+    nix flake check
+
 # configure direnv
 devinit:
     direnv allow
