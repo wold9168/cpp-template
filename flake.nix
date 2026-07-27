@@ -50,6 +50,7 @@
           just
           direnv
           clang-tools
+          trash-cli
         ];
       genLibInputs =
         pkgs: with pkgs; [
