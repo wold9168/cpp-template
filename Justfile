@@ -6,30 +6,30 @@ default:
     @just --list
 
 # configure cmake
-cmake-configure:
+configure:
     cmake -B {{ build_dir }} {{ cmake_flags }}
 
 # build the project
-cmake-build: cmake-configure
+build: configure
     cmake --build {{ build_dir }}
 
 # build and run the default target
-cmake-run: cmake-build
+run: build
     ./{{ build_dir }}/main/main
 
 # remove build artifacts
-cmake-clean:
+clean:
     trash {{ build_dir }}
 
 # full rebuild from scratch
-cmake-rebuild: cmake-clean cmake-build
+rebuild: clean build
 
 # enter nix devShell
-nix-devshell:
+devshell:
     nix develop
 
 # configure direnv
-nix-devinit:
+devinit:
     direnv allow
 
 # nix gc: clean old store
