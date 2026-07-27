@@ -56,78 +56,8 @@
           # lib from Nixpkgs
           # pkgs.fmt
         ];
-
-      # ═══════════════════════════════════════════════════════════
-      # Third-party libs (uncomment inputs above, then uncomment here)
-      # ═══════════════════════════════════════════════════════════
-      mkThirdPartyLibs = pkgs: with pkgs; [
-        # (pkgs.stdenv.mkDerivation {
-        #   pname = "example-cmake-lib";
-        #   version = "unstable";
-        #   src = inputs.example-cmake-lib;
-        #   nativeBuildInputs = [ cmake ];
-        #   installPhase = ''
-        #     mkdir -p $out/lib
-        #     cp -r lib/* $out/lib/ 2>/dev/null || true
-        #     cp -r include $out/ 2>/dev/null || true
-        #   '';
-        # })
-        # (pkgs.stdenv.mkDerivation {
-        #   pname = "example-makefile-lib";
-        #   version = "unstable";
-        #   src = inputs.example-makefile-lib;
-        #   installPhase = ''
-        #     mkdir -p $out/lib
-        #     cp lib/* $out/lib/ 2>/dev/null || true
-        #     cp -r include $out/ 2>/dev/null || true
-        #   '';
-        # })
-      ];
-
-      cppProject =
-        {
-          system,
-          pkgs ? pkgsFor system,
-        }:
-        pkgs.stdenv.mkDerivation {
-          pname = "cpp-template-project"; # Changeme
-          version = "0.1.0"; # Changeme
-
-          src = pkgs.lib.cleanSource ./.;
-
-          nativeBuildInputs = with pkgs; [ cmake ];
-          buildInputs = genLibInputs pkgs ++ mkThirdPartyLibs pkgs;
-
-          # preConfigure for inputs.example-cmake-lib, inputs.example-makefile-lib
-          # ── Build non-Nix third-party libs from inputs ──────
-          # Uncomment inputs above, then wire them here:
-
-          # preConfigure = ''
-          #   # CMake library
-          #   cmake -S ${inputs.example-cmake-lib} \
-          #         -B build-example-cmake-lib \
-          #         -DCMAKE_INSTALL_PREFIX=$PWD/.deps
-          #   cmake --build build-example-cmake-lib
-          #   cmake --install build-example-cmake-lib
-          #
-          #   # Makefile library
-          #   make -C ${inputs.example-makefile-lib} \
-          #        install PREFIX=$PWD/.deps
-          # '';
-          #
-          # cmakeFlags = [ "-DCMAKE_PREFIX_PATH=$PWD/.deps" ];
-
-          installPhase = ''
-            mkdir -p $out
-            cp -r . $out
-          '';
-        };
     in
     {
-      packages = forAllSystems (system: {
-        default = cppProject { inherit system; };
-      });
-
       devShells = forAllSystems (
         system:
         let
@@ -135,7 +65,8 @@
         in
         {
           default = pkgs.mkShell {
-            nativeBuildInputs = genToolchainInputs pkgs ++ genLibInputs pkgs ++ mkThirdPartyLibs pkgs;
+            nativeBuildInputs = genToolchainInputs pkgs;
+            buildInputs = genLibInputs pkgs;
 
             shellHook = ''
               echo "nix devShell for cpp-template"
