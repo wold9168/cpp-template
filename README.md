@@ -16,7 +16,7 @@ To add more libraries, please follow the standard procedure below:
 
 1. Add the libraries you need in `flake.nix`.
 2. Add the library names (e.g., `imtui`) to `target_link_libraries` in the `CMakeLists.txt` file of the corresponding module.
-3. Run the compilation once to trigger an update of the Nix environment variables.
+3. Run `nix flake check` to trigger an update of the Nix environment variables.
 4. If necessary, restart your editor (especially the corresponding `clangd` process) so that it picks up the new environment variables.
 
 ## License
